@@ -41,10 +41,10 @@ db.query(sql, (err, result) => {
 */
 
 // Insert post 1
-app.get('/addpost', (req, res) => {
+app.post('/addpost', (req, res) => {
     let post = { title: 'Post One', body: 'This is post number one' };
     let sql = 'INSERT INTO posts SET ?';
-    console.log(req);
+    console.log(req.body);
     let query = db.query(sql, post, (err, result) => {
         if (err) throw err;
         console.log(result);
