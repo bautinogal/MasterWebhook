@@ -4,12 +4,14 @@ const mysql = require('mysql');
 const app = express();
 
 // Create connection
+console.log('Creating connection to db...');
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '73e6f3141c6b',
     database: 'urbetrack'
 });
+console.log('Connected to db...');
 
 // Connect
 db.connect((err) => {
