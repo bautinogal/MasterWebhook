@@ -2,11 +2,13 @@ const express = require('express');
 const mysql = require('mysql');
 
 const app = express();
+var bodyParser = require('body-parser')
 
-app.configure(function() {
-    app.use(express.bodyParser());
-    app.use(app.router);
-});
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 // Create connection
 console.log('Creating connection to db...');
