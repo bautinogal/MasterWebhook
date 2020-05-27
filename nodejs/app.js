@@ -1,22 +1,59 @@
-const express = require("express")
+const express = require('express');
+const mysql = require('mysql');
 
-/* Dependencies */
-const app = express()
-app.use(express.json())
-app.use(cors())
+const app = express();
 
-app.post("/webhooks", async(req, res) => {
-    if (req.body.action == "created") {
-        console.log(`Got a like from ${req.body.sender.login}!`)
-    } else {
-        console.log(`Like deleted from: ${req.body.sender.login}!`)
+// Create connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'master',
+    database: 'urbetrack'
+});
+
+// Connect
+db.connect((err) => {
+    if (err) {
+        throw err;
     }
-    /* Remember to tell the API that we hear them. */
-    res.status(200).send("Received!")
-})
+    console.log('MySql Connected...');
+});
 
-/* Start server */
-const port = process.env.PORT || 5000
-app.listen(port)
+let sql = 'CREATE DATABASE urbetrack';
+db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send('Database created...');
+});
 
-console.log(`Running on ${port}`)
+let sql = 'CREATE TABLE events(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY(id))';
+db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send('Events table created...');
+});
+
+// Insert post 1
+app.get('/addpost1', (req, res) => {
+    let post = { title: 'Post One', body: 'This is post number one' };
+    let sql = 'INSERT INTO posts SET ?';
+    let query = db.query(sql, post, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+        res.send('Post 1 added...');
+    });
+});
+
+// Select posts
+app.get('/getposts', (req, res) => {
+    let sql = 'SELECT * FROM posts';
+    let query = db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        res.send('Posts fetched...');
+    });
+});
+
+app.listen('3000', () => {
+    console.log('Server started on port 3000');
+});
