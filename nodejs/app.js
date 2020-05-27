@@ -44,6 +44,7 @@ db.query(sql, (err, result) => {
 app.get('/addpost', (req, res) => {
     let post = { title: 'Post One', body: 'This is post number one' };
     let sql = 'INSERT INTO posts SET ?';
+    console.log(req);
     let query = db.query(sql, post, (err, result) => {
         if (err) throw err;
         console.log(result);
