@@ -12,7 +12,7 @@ const db = mysql.createConnection({
     password: '73e6f3141c6b',
     database: 'urbetrack'
 });
-*/
+
 console.log('Connected to db...');
 
 // Connect
@@ -22,6 +22,7 @@ db.connect((err) => {
     }
     console.log('MySql Connected...');
 });
+*/
 
 /*
 let sql = 'CREATE DATABASE urbetrack';
@@ -40,7 +41,7 @@ db.query(sql, (err, result) => {
 */
 
 // Insert post 1
-app.get('/addpost1', (req, res) => {
+app.get('/addpost', (req, res) => {
     let post = { title: 'Post One', body: 'This is post number one' };
     let sql = 'INSERT INTO posts SET ?';
     let query = db.query(sql, post, (err, result) => {
