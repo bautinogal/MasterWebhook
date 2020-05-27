@@ -19,6 +19,7 @@ db.connect((err) => {
     console.log('MySql Connected...');
 });
 
+/*
 let sql = 'CREATE DATABASE urbetrack';
 db.query(sql, (err, result) => {
     if (err) throw err;
@@ -32,6 +33,7 @@ db.query(sql, (err, result) => {
     console.log(result);
     res.send('Events table created...');
 });
+*/
 
 // Insert post 1
 app.get('/addpost1', (req, res) => {
@@ -54,6 +56,6 @@ app.get('/getposts', (req, res) => {
     });
 });
 
-app.listen('3000', () => {
-    console.log('Server started on port 3000');
+app.listen('22022', () => {
+    console.log('Server started on port 22022');
 });
