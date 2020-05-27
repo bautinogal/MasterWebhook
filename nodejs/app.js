@@ -44,12 +44,13 @@ db.query(sql, (err, result) => {
 app.post('/addpost', (req, res) => {
     let post = { title: 'Post One', body: 'This is post number one' };
     let sql = 'INSERT INTO posts SET ?';
-    console.log(req.body);
+    console.log(JSON.parse((req.body)));
+    /*
     let query = db.query(sql, post, (err, result) => {
         if (err) throw err;
         console.log(result);
         res.send('Post 1 added...');
-    });
+    });*/
 });
 
 // Select posts
