@@ -3,6 +3,11 @@ const mysql = require('mysql');
 
 const app = express();
 
+app.configure(function() {
+    app.use(express.bodyParser());
+    app.use(app.router);
+});
+
 // Create connection
 console.log('Creating connection to db...');
 /*
@@ -52,6 +57,7 @@ app.post('/addpost', (req, res) => {
         console.log(result);
         res.send('Post 1 added...');
     });*/
+    res.send('Post 1 added...');
 });
 
 // Select posts
