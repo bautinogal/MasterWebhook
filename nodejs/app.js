@@ -7,7 +7,7 @@ const app = express();
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'master',
+    password: '73e6f3141c6b',
     database: 'urbetrack'
 });
 
