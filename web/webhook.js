@@ -12,6 +12,7 @@ const webhookRoute = (req, res) => {
         .send('incoming', message)
         .then(() => {
             res.end('Received ' + JSON.stringify(message));
+            //Comente lo de abajo porque no me interesa la parte del websocket por ahora y me rompe la app
             //return queue.send('socket', record);
         })
         .catch(e => {
