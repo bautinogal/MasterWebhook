@@ -10,7 +10,7 @@ const webhookRoute = (req, res) => {
         .send('incoming', message)
         .then(() => {
             res.end('Received ' + JSON.stringify(message));
-            return queue.send('socket', record);
+            //return queue.send('socket', record);
         })
         .catch(e => {
             console.error(e);
