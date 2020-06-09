@@ -2,7 +2,7 @@ const express = require('express');
 const repo = require('../lib/repo');
 
 const listRoute = (req, res) => {
-    console.log("GET POSTS FROM: " + req.protocol + '://' + req.socket.remoteAddress + req.originalUrl);
+    console.log("GET POSTS FROM: " + req.protocol + '://' + req.socket.remoteAddress);
     console.log(JSON.stringify(messages));
     repo
         .list()
