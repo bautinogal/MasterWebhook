@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const queue = require('../lib/queue');
 
 const webhookRoute = (req, res) => {
+    console.log("NEW POST FROM: " + req.protocol + '://' + req.get('host') + req.originalUrl)
     const message = {
         text: req.body,
     };
