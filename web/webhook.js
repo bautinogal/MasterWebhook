@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const queue = require('../lib/queue');
 
+//POST: guarda un msj en la bd de mongodb
 const webhookRoute = (req, res) => {
     console.log("NEW POST FROM: " + req.protocol + '://' + req.socket.remoteAddress)
     const message = {

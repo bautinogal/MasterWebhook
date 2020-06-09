@@ -1,6 +1,7 @@
 const express = require('express');
 const repo = require('../lib/repo');
 
+//Me devuelve la lista de todos los mensajes posteados
 const listRoute = (req, res) => {
     console.log("GET POSTS FROM: " + req.protocol + '://' + req.socket.remoteAddress);
     console.log(JSON.stringify(messages));
