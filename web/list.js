@@ -3,12 +3,12 @@ const repo = require('../lib/repo');
 
 const listRoute = (req, res) => {
     console.log("GET POSTS FROM: " + req.protocol + '://' + req.get('host') + req.originalUrl);
-    console.log(JSON.stringify(repo.list()));
+    console.log(JSON.stringify(messages));
     repo
         .list()
         .then(messages => {
             res.setHeader('content-type', 'application/json');
-            res.end(JSON.stringify(repo.list()));
+            res.end(JSON.stringify(messages));
         })
         .catch(e => {
             console.error(e);
