@@ -60,7 +60,7 @@ router.get('/table', async(req, res) => {
 //Endpoints de las APIS:
 //Recivo un evento y lo encolo
 //TODO: agregar error handler cuando el body es un JSON invalido
-router.post('/api/add', bodyParser.text({ type: '*/*' }), async(req, res, next) => {
+router.post('/addpost', bodyParser.text({ type: '*/*' }), async(req, res, next) => {
     // "addReqInfo" agrega el timeStamp, protocolo y url al objeto "message" ademas de lo q viene en el "req.body"
     const message = addReqInfo(JSON.parse(req.body), req);
     const queueName = 'IncomingMessages';
