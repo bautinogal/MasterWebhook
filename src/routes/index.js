@@ -45,6 +45,8 @@ router.get('/table', async(req, res) => {
     //2-agregar paginacion
     //3-que la view redireccione a este mismo endpoint con el numero de paginacion que clickea el user
 
+
+    console.log('Routes@/table: Requesting table from: %s', req.url);
     //1-obtener un array de datos que quiero mostrar en la tabla
     let filters = ["serverReceived", "protocol", "url", "serverEnqueuedTS", "serverEnqueued"] //U: que keys no quiero mostrar en mi tabla
     let headers = ['Id', 'Fecha', 'Mensaje', 'Codigo', 'Latitud', 'Logitud', 'Interno', 'Patente', 'serverReceivedTS'] //A: los titulos de la tabla que mostramos para los mensajes que nos llegaron
