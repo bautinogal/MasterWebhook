@@ -15,7 +15,7 @@
             $("input").change(function() {
                 const filter = $(this).val();
                 console.log("The text has been changed to: %s", filter);
-                changeURLQuery("q", filter);
+                window.location.href = '/table?buscar=' + filter; //relative to domain
             });
         });
     </script>

@@ -23,9 +23,10 @@ function addReqInfo(message, req) {
 }
 
 //
-function dataGet() {
+function dataGet(query) {
+    console.log("routes@dataGet: Query: %s", query);
     return new Promise((resolve, reject) => {
-        repo.list(config.messageCollectionName)
+        repo.findTest(0, 100, query, config.messageCollectionName)
             .then(result => resolve(result))
             .catch(err => {
                 console.log("err /api/getlist: ", err);
@@ -45,14 +46,29 @@ router.get('/table', async(req, res) => {
     //2-agregar paginacion
     //3-que la view redireccione a este mismo endpoint con el numero de paginacion que clickea el user
 
+    console.log('Routes@/table: Requesting table from: %s, query: %s', req.url, req.query);
 
-    console.log('Routes@/table: Requesting table from: %s', req.url);
+    let query = "";
+    console.log("Routes@api/table: Parsing query: %s", query);
+    try {
+        query = JSON.parse(req.query.q || "{}");
+        console.log("Routes@api/table: Query parsed succesfully, query: %s", query);
+    } catch (e) {
+        console.log("Routes@api/table: Error parsing query: %s", req.query.q);
+        return res.status(400).send("Error parsing query!");
+    }
+
+    query = req.query.buscar || undefined;
+
     //1-obtener un array de datos que quiero mostrar en la tabla
-    let filters = ["serverReceived", "protocol", "url", "serverEnqueuedTS", "serverEnqueued"] //U: que keys no quiero mostrar en mi tabla
+    let filters = ["score", "serverReceived", "protocol", "url", "serverEnqueuedTS", "serverEnqueued"] //U: que keys no quiero mostrar en mi tabla
     let headers = ['Id', 'Fecha', 'Mensaje', 'Codigo', 'Latitud', 'Logitud', 'Interno', 'Patente', 'serverReceivedTS'] //A: los titulos de la tabla que mostramos para los mensajes que nos llegaron
 
-    let data = await dataGet();
-    result = ArrayObjFilter(data.result, filters)
+    //DataGet devuelve un array que tiene todos los documentos en el primer elemento y la cantidad total en el segundo(de toda la db)
+    let data = await dataGet(query);
+    console.log("Routes@api/table: dataGet result: %s", data);
+    let documents = data[0];
+    result = ArrayObjFilter(documents, filters);
     let messages = result.map(result => Object.values(result)) //A: array de arrays con los values del diccioonario devuelto por la base de datos para darselo a la tabla 
     let messagesCount = data.count;
     res.render('messageTable', { rows: messages, messagesCount, headers })
@@ -63,6 +79,8 @@ router.get('/table', async(req, res) => {
 //Recivo un evento y lo encolo
 //TODO: agregar error handler cuando el body es un JSON invalido
 router.post('/addpost', bodyParser.text({ type: '*/*' }), async(req, res, next) => {
+
+
     // "addReqInfo" agrega el timeStamp, protocolo y url al objeto "message" ademas de lo q viene en el "req.body"
     const message = addReqInfo(JSON.parse(req.body), req);
     const queueName = 'IncomingMessages';

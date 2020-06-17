@@ -5,7 +5,9 @@ const routes = require('./routes/index'); // Script que administra los "Endpoint
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+require('./config/collectionConfig.js');
 
+/*
 const opts = {
     key: fs.readFileSync('./server_key.pem'),
     cert: fs.readFileSync('./server_cert.pem'),
@@ -17,6 +19,7 @@ const opts = {
 console.log("Key: " + opts.key);
 console.log("Cert: " + opts.cert);
 console.log("Ca: " + opts.ca);
+*/
 
 // Inicializo el servidor
 const app = express();
@@ -49,12 +52,12 @@ const worker = require('./workers/wRabToMdb');
 // Puesta en marcha del servidor
 console.log(`App: Servidor Listo!`);
 
-/*
+
 app.listen(app.get('port'), () => {
     console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`);
-});*/
+});
 
-https.createServer(opts, app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
+//https.createServer(opts, app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
 /*
 app.listen(app.get('port'));
 https.createServer(app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
