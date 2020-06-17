@@ -44,9 +44,9 @@ const worker = require('./workers/wRabToMdb');
 // Puesta en marcha del servidor
 console.log(`App: Servidor Listo!`);
 
-https.createServer(opts, app).listen(app.get('port'));
 
-/*
 app.listen(app.get('port'), () => {
     console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`);
-});*/
+});
+
+https.createServer(opts, app).listen(app.get('port'));
