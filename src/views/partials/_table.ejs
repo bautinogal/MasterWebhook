@@ -3,9 +3,22 @@
 
 <!--Ejemplo tabla con DataTables-->
 <div class="container-fluid" style="margin-right: 2%;margin-left: 2%;">
+    <div>
+        <form>
+            <div class="form-row align-items-center">
+                <div class="col-auto">
+                    <label class="sr-only" for="inlineFormInput">Filtro</label>
+                    <input type="text" class="form-control mb-2" id="filtro" placeholder="Filtro">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-2" id="buscar">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="table-responsive">
+            <div class="table-responsive" id='table'>
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
@@ -35,24 +48,16 @@
 
 
 <script>
-    $(document).ready(function() {
-        $('#example').DataTable({
-            //para cambiar el lenguaje a español
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros",
-                "zeroRecords": "No se encontraron resultados",
-                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sSearch": "Buscar:",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "sProcessing": "Procesando...",
-            }
-        });
-    });
+    let btn = document.getElementById("buscar");
+    let filter = document.getElementById("filtro");
+
+    function search() {
+        let filterValue = filter.value;
+        if (filterValue) {
+            console.log("Filtering with: %s", filterValue);
+            window.location.href = '/table?buscar=' + filterValue; //relative to domain
+        }
+    }
+
+    btn.addEventListener("click", search());
 </script>
