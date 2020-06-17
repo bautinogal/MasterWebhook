@@ -71,6 +71,7 @@ router.get('/table', async(req, res) => {
     result = ArrayObjFilter(documents, filters);
     let messages = result.map(result => Object.values(result)) //A: array de arrays con los values del diccioonario devuelto por la base de datos para darselo a la tabla 
     let messagesCount = data.count;
+    //console.log("Routes@api/table: messages: " + messages);
     res.render('messageTable', { rows: messages, messagesCount, headers })
 
 });

@@ -15,7 +15,8 @@
             $("input").change(function() {
                 const filter = $(this).val();
                 console.log("The text has been changed to: %s", filter);
-                window.location.href = '/table?buscar=' + filter; //relative to domain
+                const redirTo = '/table?buscar=' + filter;
+                window.location.href = redirTo; //relative to domain
             });
         });
     </script>
