@@ -9,7 +9,7 @@ const https = require('https');
 const opts = {
     key: fs.readFileSync('./server_key.pem'),
     cert: fs.readFileSync('./server_cert.pem'),
-    requestCert: true,
+    requestCert: false,
     rejectUnauthorized: false,
     ca: [fs.readFileSync('./server_cert.pem')]
 }
