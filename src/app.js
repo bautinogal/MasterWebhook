@@ -2,6 +2,7 @@ const path = require('path'); // Herramienta para armar los paths independientem
 const express = require('express'); // Framework de Node para armar servidores
 const morgan = require('morgan'); // Herramienta para loggear
 const routes = require('./routes/index'); // Script que administra los "Endpoints"
+const fs = require('fs');
 
 const opts = {
     key: fs.readFileSync('server_key.pem'),
