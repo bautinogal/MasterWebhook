@@ -11,8 +11,12 @@ const opts = {
     cert: fs.readFileSync('./server_cert.pem'),
     requestCert: true,
     rejectUnauthorized: false,
-    ca: [fs.readFileSync('server_cert.pem')]
+    ca: [fs.readFileSync('./server_cert.pem')]
 }
+
+console.log("Key: " + opts.key);
+console.log("Cert: " + opts.cert);
+console.log("Ca: " + opts.ca);
 
 // Inicializo el servidor
 const app = express();
