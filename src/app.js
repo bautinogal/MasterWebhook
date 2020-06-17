@@ -7,8 +7,8 @@ const http = require('http');
 const https = require('https');
 
 const opts = {
-    key: fs.readFileSync('server_key.pem'),
-    cert: fs.readFileSync('server_cert.pem'),
+    key: fs.readFileSync('./server_key.pem'),
+    cert: fs.readFileSync('./server_cert.pem'),
     requestCert: true,
     rejectUnauthorized: false,
     ca: [fs.readFileSync('server_cert.pem')]
@@ -51,3 +51,7 @@ app.listen(app.get('port'), () => {
 });*/
 
 https.createServer(opts, app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
+/*
+app.listen(app.get('port'));
+https.createServer(app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
+*/
