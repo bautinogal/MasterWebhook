@@ -3,6 +3,14 @@ const express = require('express'); // Framework de Node para armar servidores
 const morgan = require('morgan'); // Herramienta para loggear
 const routes = require('./routes/index'); // Script que administra los "Endpoints"
 
+const opts = {
+    key: fs.readFileSync('server_key.pem'),
+    cert: fs.readFileSync('server_cert.pem'),
+    requestCert: true,
+    rejectUnauthorized: false,
+    ca: [fs.readFileSync('server_cert.pem')]
+}
+
 // Inicializo el servidor
 const app = express();
 console.log(`App: Inicializando Servidor...`);
@@ -33,6 +41,10 @@ const worker = require('./workers/wRabToMdb');
 
 // Puesta en marcha del servidor
 console.log(`App: Servidor Listo!`);
+
+https.createServer(opts, app).listen(app.get('port'));
+
+/*
 app.listen(app.get('port'), () => {
     console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`);
-});
+});*/
