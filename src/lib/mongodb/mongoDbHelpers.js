@@ -31,44 +31,4 @@ const find = function(desde, cantidad, buscar, coleccion) {
     })
 }
 
-function list(collectionName, query, desde, cantidad) {
-    return new Promise(async(resolve, reject) => {
-        desde = desde || 0;
-        cantidad = cantidad || 100;
-
-        query = query || {}; //A: dflt
-        let db = await MongoPool.getInstance()
-        db.collection(collectionName).find(query)
-            .skip(desde)
-            .limit(cantidad)
-            .toArray(async(err, result) => {
-                let count = await db.collection(collectionName).countDocuments(query);
-                if (err) reject(err)
-                resolve({ result, count })
-            });
-    })
-}
-
-const findTest = function(desde, cantidad, buscar, coleccion) {
-    console.log("desde: ", desde, " hasta: ", cantidad, " buscar: ", buscar, " coleccion: ", coleccion)
-    let query = {}
-    if (buscar) {
-        query = { $text: { $search: buscar } }
-    }
-    console.log("FindTest: query: %s", query);
-    return new Promise(async(resolve, reject) => {
-        let db = await MongoPool.getInstance();
-        db.collection(coleccion).find(query)
-            .skip(desde)
-            .limit(cantidad)
-            .project({ score: { $meta: "textScore" } }) //A: le digo que me devuelva los objectos con un score de coincidencia
-            .sort({ score: { $meta: "textScore" } }) //A: lo ordeno segun el score, el que mas se parece lo dejo primero
-            .toArray(async(err, users) => {
-                let count = await db.collection(coleccion).countDocuments(query);
-                if (err) reject(err)
-                resolve([users, count])
-            })
-    })
-}
-
-module.exports = { save, list, find };
+module.exports = { save, find };
