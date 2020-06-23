@@ -1,58 +1,296 @@
 <!-- INFO: una tabla generica pára mostrar informacion recibe: headers y data para crear la tabla -->
 
+<div class="container-fluid">
+  <!-- Filtro -->
+  <div class="row-12">
+    <form class="form-inline" id="filter-form">
+      <div class="form-group mx-sm-3 mb-2">
+        <label for="filter-input" class="sr-only">Filtro</label>
+        <input type="text" class="form-control" id="filter-input" placeholder="Filtro">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2" id="search-btn" >Buscar</button>
+      <div class="form-group mx-sm-3 mb-2">
+        <input type="text" readonly class="form-control-plaintext" id="resultados" value="23413 resultados">
+      </div>
+    </form>
+  </div>
 
-<!--Ejemplo tabla con DataTables-->
-<div class="container-fluid" style="margin-right: 2%;margin-left: 2%;">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="table-responsive">
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <% headers.map( header=>{ %>
-                                <th>
-                                    <%=header%>
-                                </th>
-                                <% }) %>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% rows.map( columns =>{ %>
-                            <tr>
-                                <% columns.map( field => { %>
-                                    <td>
-                                        <%=field%>
-                                    </td>
-                                    <% }) %>
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- Spinner de carga -->
+  <div class="text-center d-none" id="spinner">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row">
+    <table class="table" id="table">
+      <thead id="table-headers">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Handle</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Larry</td>
+          <td>the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginacion -->
+  <div class="row">
+    <nav aria-label="...">
+      <ul class="pagination" id="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#">Primero</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#"><<</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item active">
+          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">4</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">5</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">6</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">7</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">8</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">9</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">10</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">>></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">Último (43)</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>
 
-
 <script>
-    $(document).ready(function() {
-        $('#example').DataTable({
-            //para cambiar el lenguaje a español
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros",
-                "zeroRecords": "No se encontraron resultados",
-                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sSearch": "Buscar:",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "sProcessing": "Procesando...",
-            }
-        });
+  const rowsPerPage = 10;
+
+  const spinner = document.getElementById('spinner');
+  const filterForm = document.getElementById('filter-form');
+  const filterInput = document.getElementById('filter-input');
+  const searchBtn = document.getElementById('search-btn');
+  const resultados = document.getElementById('resultados');
+  const table = document.getElementById('table');
+  const tableHeaders = document.getElementById('table-headers');
+  const tableBody = document.getElementById('table-body');
+  const pagination = document.getElementById('pagination');
+
+  //TODO: 
+  // Pasar query cuando apreto botones...
+  const fakeData = {
+    headers:["Fecha","Mensaje","Codigo","Latitud","Longitud","Interno","Patente"],
+    rows:[
+      {
+        "Patente":"OGH849",
+        "Fecha":"2020-04-13T12:27:42.3895267Z",
+        "Mensajssse":"Encendido de Motor",
+        "Codigo":"113",
+        "Interno":"3010",
+        "Latitud":-34.558792114257812,
+        "Longitud":-58.524879455566406
+        
+      },
+      {
+        "Fecha":"2020-04-13T12:27:42.3895267Z",
+        "Mensaje":"Encendido de Motor",
+        "Codigo":"114",
+        "Latitud":-34.558792114257812,
+        "Longitud":-58.524879455566406,
+        "Interno":"3010",
+        "Patente":"OGH849"
+      },
+      {
+        "Fecha":"2020-04-13T12:27:42.3895267Z",
+        "Mensaje":"Encendido de Motor",
+        "Codigo":"115",
+        "Latitud":-34.558792114257812,
+        "Longitud":-58.524879455566406,
+        "Interno":"3010",
+        "Patente":"OGH849"
+      }
+    ],
+    encontrados:632
+  };
+
+  fetchData();
+
+  function setHeaders(headers){
+    tableHeaders.innerHTML = "";
+    headers.forEach(header =>{
+      tableHeaders.appendChild(document.createElement("th")).
+      appendChild(document.createTextNode(header));
     });
+  }
+
+  function setRows(rows){
+    tableBody.innerHTML = "";
+    rows.forEach(row =>{
+      var newRow = tableBody.insertRow();
+      var i = 0;
+      console.log(tableHeaders.childNodes);
+      for (i = 0; i < tableHeaders.childNodes.length; i++){
+        var key = tableHeaders.childNodes[i].innerHTML;
+        console.log(i);
+        console.log(key);
+        if (row.hasOwnProperty(key)){
+          console.log("entre con key: %s" , key);
+          var newCell  = newRow.insertCell();
+          var newText  = document.createTextNode(row[key]);
+          newCell.appendChild(newText);
+        }else{
+          console.log("no entre con key: %s" , key);
+          var newCell  = newRow.insertCell();
+          var newText  = document.createTextNode("-");
+          newCell.appendChild(newText);
+        }
+      } 
+    });
+  }
+
+  function fetchData(){
+    spinner.classList.remove("d-none");
+    table.classList.add("d-none");
+    pagination.classList.add("d-none");
+    myVar = setTimeout(() => onFetch(fakeData), 500);
+    //TODO: acá deberia hacer el fetch posta
+  }
+
+  function onFetch(data){
+    spinner.classList.add("d-none");
+    table.classList.remove("d-none");
+    pagination.classList.remove("d-none");
+    setHeaders(data.headers);
+    setRows(data.rows);
+  }
+
+  function pageSelected(page) {
+      selectedPage = page;
+      fetchData();
+  }
+
+  function onSubmit(event) {
+      event.preventDefault();
+      console.log("table@search: filter: %s", filterInput.value);
+      window.location.href = "/table";
+  }
+
+  function onPagination(event) {
+      event.preventDefault();
+      var target = event.target;
+      var value = event.target.innerHTML;
+      if(isNaN(value)){
+        switch(value) {
+          case "Primero":
+            pageSelected(0);
+            break;
+          case "<<":
+            shiftPagination(-10);
+            break;
+          case ">>":
+            shiftPagination(10);
+          break;
+          default:
+            pageSelected(pageCount);
+            break;
+        }
+      }
+      else
+        pageSelected(value);
+  };  
+
+  filterForm.addEventListener('submit',  fetchData);
+  pagination.addEventListener('click', (e) => onPagination(e));
+
 </script>
+
+
+
+
+

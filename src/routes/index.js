@@ -46,6 +46,7 @@ router.get('/table', async(req, res) => {
     //2-agregar paginacion
     //3-que la view redireccione a este mismo endpoint con el numero de paginacion que clickea el user
 
+
     console.log('Routes@/table: Requesting table from: %s, query: %s', req.url, req.query);
 
     let query = "";
@@ -65,6 +66,7 @@ router.get('/table', async(req, res) => {
     let headers = ['Id', 'Fecha', 'Mensaje', 'Codigo', 'Latitud', 'Logitud', 'Interno', 'Patente', 'serverReceivedTS'] //A: los titulos de la tabla que mostramos para los mensajes que nos llegaron
 
     //DataGet devuelve un array que tiene todos los documentos en el primer elemento y la cantidad total en el segundo(de toda la db)
+
     let data = await dataGet(query);
     console.log("Routes@api/table: dataGet result: %s", data);
     let documents = data[0];
@@ -98,16 +100,20 @@ router.get('/api/getlist', async(req, res, next) => {
     let query = {};
     let desde = Number(req.query.desde);
     let cantidad = Number(req.query.cantidad);
+    let buscar = req.query.buscar;
     console.log("Routes@api/getlist: Parsing query: %s", query);
+
+    /*
     try {
         query = JSON.parse(req.query.q || "{}");
         console.log("Routes@api/getlist: Query parsed succesfully, query: %s", query);
     } catch (e) {
         console.log("Routes@api/getlist: Error parsing query: %s", req.query.q);
         return res.status(400).send("Error parsing query!");
-    }
+    }*/
+
     //TODO: agregar querys mas complejos
-    repo.list(config.messageCollectionName, query, desde, cantidad)
+    repo.find(desde, cantidad, buscar, config.messageCollectionName)
         .then(result => res.send(result))
         .catch(err => {
             console.log("err /api/getlist: ", err);
