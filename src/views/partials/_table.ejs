@@ -1,5 +1,4 @@
 <!-- INFO: una tabla generica pára mostrar informacion recibe: headers y data para crear la tabla -->
-
 <div class="container-fluid">
   <!-- Filtro -->
   <div class="row-12">
@@ -16,7 +15,7 @@
   </div>
 
   <!-- Spinner de carga -->
-  <div class="text-center d-none" id="spinner">
+  <div class="text-center d-none" id="spinner" style="height=100%;>
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
@@ -108,16 +107,16 @@
         <li class="page-item">
           <a class="page-link" href="#"><<</a>
         </li>
-        <li class="page-item">
+        <li class="page-item active">
           <a class="page-link" href="#">1</a>
         </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+        <li class="page-item">
+          <a class="page-link" href="#">2</a>
         </li>
         <li class="page-item">
           <a class="page-link" href="#">3</a>
         </li>
-        <li class="page-item">
+        <li class="page-item ">
           <a class="page-link" href="#">4</a>
         </li>
         <li class="page-item">
@@ -142,7 +141,7 @@
           <a class="page-link" href="#">>></a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#">Último (43)</a>
+          <a class="page-link" id="last-page" href="#">Último (43)</a>
         </li>
       </ul>
     </nav>
@@ -161,11 +160,18 @@
   const tableHeaders = document.getElementById('table-headers');
   const tableBody = document.getElementById('table-body');
   const pagination = document.getElementById('pagination');
+  const lastPage = document.getElementById('last-page');
 
-  //TODO: 
-  // Pasar query cuando apreto botones...
-  const fakeData = {
-    headers:["Fecha","Mensaje","Codigo","Latitud","Longitud","Interno","Patente"],
+  var urlParams = new URLSearchParams(window.location.search);
+  const headers = ["Fecha","Mensaje","Codigo","Latitud","Longitud","Interno","Patente"];
+  var selectedPage =  1;
+  var pageCount = 10;
+  var paginationShift = 0;
+  var filter = "";
+  var pagePagination = 0;
+
+
+  var fetchedData = {
     rows:[
       {
         "Patente":"OGH849",
@@ -196,10 +202,18 @@
         "Patente":"OGH849"
       }
     ],
-    encontrados:632
+    found:632
   };
 
-  fetchData();
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 
   function setHeaders(headers){
     tableHeaders.innerHTML = "";
@@ -214,18 +228,13 @@
     rows.forEach(row =>{
       var newRow = tableBody.insertRow();
       var i = 0;
-      console.log(tableHeaders.childNodes);
       for (i = 0; i < tableHeaders.childNodes.length; i++){
         var key = tableHeaders.childNodes[i].innerHTML;
-        console.log(i);
-        console.log(key);
         if (row.hasOwnProperty(key)){
-          console.log("entre con key: %s" , key);
           var newCell  = newRow.insertCell();
           var newText  = document.createTextNode(row[key]);
           newCell.appendChild(newText);
         }else{
-          console.log("no entre con key: %s" , key);
           var newCell  = newRow.insertCell();
           var newText  = document.createTextNode("-");
           newCell.appendChild(newText);
@@ -234,59 +243,202 @@
     });
   }
 
+  function setPageCount(page, total){
+    pageCount = Math.trunc((total/10));
+    
+    if(total%10 != 0)
+      pageCount++;
+
+    if(pageCount <= 0)
+      pageCount = 1;
+
+    lastPage.innerHTML = `Último (${pageCount})`;
+
+    console.log("table@setPageCount(): %s", pageCount);
+  }
+
   function fetchData(){
-    spinner.classList.remove("d-none");
+    spinner.classList.remove("d-block");
     table.classList.add("d-none");
     pagination.classList.add("d-none");
-    myVar = setTimeout(() => onFetch(fakeData), 500);
-    //TODO: acá deberia hacer el fetch posta
+
+    let params = {
+      "desde": ((selectedPage - 1) * 10),
+      "cantidad": 10,
+      "buscar": filter 
+    };
+
+    let query = Object.keys(params)
+      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+      .join('&');
+
+
+    fetch("/api/getlist?" + query, {
+      protocol: "http",
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json'
+      }
+    }).then((res) => res.json()
+        .then((r)=>{
+          console.log(r);
+          fetchedData.rows = r[0];
+          fetchedData.found = r[1];
+          onFetch(fetchedData);
+        }));
+    //myVar = setTimeout(() => onFetch(fetchedData), 500);//TODO: acá deberia hacer el fetch posta
   }
 
   function onFetch(data){
+    //Apago el spinner y muestro la tabla
     spinner.classList.add("d-none");
     table.classList.remove("d-none");
     pagination.classList.remove("d-none");
-    setHeaders(data.headers);
+
+    //Muestro la cantidad de resultados encontrados
+    resultados.value = data.found.toString() + " resultados";
+
+    //Lleno la tabla con la info recibida
+    setHeaders(headers);
     setRows(data.rows);
+    setPageCount(selectedPage, data.found);
+
+
+    //TODO: Ver el flujo del fetch-pageselected
+    var aItems = pagination.getElementsByTagName("a");
+
+    //Marco como activa la pagina seleccionada:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("active");
+      if(aItems[i].innerHTML == selectedPage){
+        aItems[i].parentNode.classList.add("active");
+      }
+    }
+
+    //Apago las paginas que no estan en el rango:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("d-none");
+      if(Number(aItems[i].innerHTML) > pageCount){
+        aItems[i].parentNode.classList.add("d-none");
+      }
+    }
+
   }
 
   function pageSelected(page) {
-      selectedPage = page;
-      fetchData();
+    selectedPage = page;
+    console.log("table@pageSelected(): selected page: %s", selectedPage);
+
+    var aItems = pagination.getElementsByTagName("a");
+    console.log("table@pageSelected(): aItems found: %s", aItems.length);
+
+    //Marco como activa la pagina seleccionada:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("active");
+      if(aItems[i].innerHTML == selectedPage){
+        aItems[i].parentNode.classList.add("active");
+      }
+    }
+
+    //Apago las paginas que no estan en el rango:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("d-none");
+      if(Number(aItems[i].innerHTML) > pageCount){
+        aItems[i].parentNode.classList.add("d-none");
+      }
+    }
+
+    fetchData();
   }
 
   function onSubmit(event) {
       event.preventDefault();
       console.log("table@search: filter: %s", filterInput.value);
-      window.location.href = "/table";
+      filter = filterInput.value;
+      shiftPagination(-pagePagination);
+      pageSelected(1);
+  }
+
+  function shiftPagination(shift){
+    pagePagination += shift;
+
+    if(pagePagination >= (((fetchedData.found)/100) - 1))
+      pagePagination = (((fetchedData.found)/100) - 1);
+
+    if(pagePagination < 0)
+      pagePagination = 0;
+
+    pagePagination = Math.trunc(pagePagination);
+
+    console.log("table@ shiftPagination(): pagePagination: %s", pagePagination);
+
+    var items = pagination.getElementsByTagName("a");
+
+    for (var i = 0; i < items.length; ++i) {
+      var value = items[i].innerHTML;
+      if(!isNaN(value)){
+        items[i].innerHTML = i - 1 + pagePagination * 10;
+      }
+    }
+
+    //TODO: Ver el flujo del fetch-pageselected
+    var aItems = pagination.getElementsByTagName("a");
+
+    //Marco como activa la pagina seleccionada:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("active");
+      if(aItems[i].innerHTML == selectedPage){
+        aItems[i].parentNode.classList.add("active");
+      }
+    }
+
+    //Apago las paginas que no estan en el rango:
+    for (var i = 0; i < aItems.length; ++i) {
+      aItems[i].parentNode.classList.remove("d-none");
+      if(Number(aItems[i].innerHTML) > pageCount){
+        aItems[i].parentNode.classList.add("d-none");
+      }
+    }
   }
 
   function onPagination(event) {
-      event.preventDefault();
-      var target = event.target;
-      var value = event.target.innerHTML;
-      if(isNaN(value)){
-        switch(value) {
-          case "Primero":
-            pageSelected(0);
-            break;
-          case "<<":
-            shiftPagination(-10);
-            break;
-          case ">>":
-            shiftPagination(10);
+    event.preventDefault();
+    //var target = event.target;
+    var value = event.target.innerHTML;
+    console.log("onPagination value: %s", value);
+    if(isNaN(value)){
+      switch(value) {
+        case "Primero":
+          console.log("table@onPagination(): isNan Selected: 'Primero' ");
+          shiftPagination(-999999)
+          pageSelected(1);
           break;
-          default:
-            pageSelected(pageCount);
-            break;
-        }
+        case "&lt;&lt;": // '&lt;&lt;' == '<<' para js
+          console.log("table@onPagination(): isNan Selected: '<<' ");
+          shiftPagination(-1);
+          break;
+        case "&gt;&gt;": // '&lt;&lt;' == '>>' para js
+          console.log("table@onPagination(): isNan Selected: '>>' ");
+          shiftPagination(1);
+        break;
+        default:
+          console.log("table@onPagination(): isNan Selected: '%s' ", value);
+          shiftPagination(999999)
+          pageSelected(pageCount);
+          break;
       }
-      else
-        pageSelected(value);
-  };  
+    }
+    else{
+      console.log("table@onPagination(): Number Selected: '%s' ", value);
+      pageSelected(value);
+    }
+      
+  }  
 
-  filterForm.addEventListener('submit',  fetchData);
+  filterForm.addEventListener('submit',  (e) => onSubmit(e));
   pagination.addEventListener('click', (e) => onPagination(e));
+  
+  pageSelected(1);
 
 </script>
 

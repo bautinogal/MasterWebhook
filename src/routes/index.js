@@ -26,7 +26,7 @@ function addReqInfo(message, req) {
 function dataGet(query) {
     console.log("routes@dataGet: Query: %s", query);
     return new Promise((resolve, reject) => {
-        repo.findTest(0, 100, query, config.messageCollectionName)
+        repo.find(0, 100, query, config.messageCollectionName)
             .then(result => resolve(result))
             .catch(err => {
                 console.log("err /api/getlist: ", err);
@@ -82,8 +82,6 @@ router.get('/table', async(req, res) => {
 //Recivo un evento y lo encolo
 //TODO: agregar error handler cuando el body es un JSON invalido
 router.post('/addpost', bodyParser.text({ type: '*/*' }), async(req, res, next) => {
-
-
     // "addReqInfo" agrega el timeStamp, protocolo y url al objeto "message" ademas de lo q viene en el "req.body"
     const message = addReqInfo(JSON.parse(req.body), req);
     const queueName = 'IncomingMessages';
@@ -98,19 +96,10 @@ router.post('/addpost', bodyParser.text({ type: '*/*' }), async(req, res, next) 
 //TODO: revisar como recibimos la query y si no hay q mover cosas a otro lado...
 router.get('/api/getlist', async(req, res, next) => {
     let query = {};
-    let desde = Number(req.query.desde);
-    let cantidad = Number(req.query.cantidad);
+    let desde = Number(req.query.desde || 0);
+    let cantidad = Number(req.query.cantidad || 20);
     let buscar = req.query.buscar;
     console.log("Routes@api/getlist: Parsing query: %s", query);
-
-    /*
-    try {
-        query = JSON.parse(req.query.q || "{}");
-        console.log("Routes@api/getlist: Query parsed succesfully, query: %s", query);
-    } catch (e) {
-        console.log("Routes@api/getlist: Error parsing query: %s", req.query.q);
-        return res.status(400).send("Error parsing query!");
-    }*/
 
     //TODO: agregar querys mas complejos
     repo.find(desde, cantidad, buscar, config.messageCollectionName)
