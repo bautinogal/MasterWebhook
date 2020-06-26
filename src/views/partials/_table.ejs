@@ -1,19 +1,21 @@
 <!-- INFO: una tabla generica pára mostrar informacion recibe: headers y data para crear la tabla -->
 <div class="container-fluid">
   <!-- Filtro -->
-  <div class="row-12">
-    <form class="form-inline" id="filter-form">
-      <div class="form-group mx-sm-3 mb-2">
-        <label for="filter-input" class="sr-only">Filtro</label>
-        <input type="text" class="form-control" id="filter-input" placeholder="Filtro">
-      </div>
-      <button type="submit" class="btn btn-primary mb-2" id="search-btn" >Buscar</button>
-      <div class="form-group mx-sm-3 mb-2">
-        <input type="text" readonly class="form-control-plaintext" id="resultados" value="23413 resultados">
-      </div>
-    </form>
+  <div class="container-fluid">
+    <div class="row-12">
+      <form class="form-inline" id="filter-form">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="filter-input" class="sr-only">Filtro</label>
+          <input type="text" class="form-control" id="filter-input" placeholder="Filtro">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2" id="search-btn" >Buscar</button>
+        <div class="form-group mx-sm-3 mb-2">
+          <input type="text" readonly class="form-control-plaintext" id="resultados" value="23413 resultados">
+        </div>
+      </form>
+    </div>
   </div>
-
+  
   <!-- Spinner de carga -->
   <div class="text-center d-none" id="spinner" style="height=100%;>
     <div class="spinner-border" role="status">
@@ -22,129 +24,133 @@
   </div>
 
   <!-- Tabla -->
-  <div class="row">
-    <table class="table" id="table">
-      <thead id="table-headers">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody id="table-body">
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container-fluid">
+    <div class="row">
+      <table class="table" id="table">
+        <thead id="table-headers">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Paginacion -->
-  <div class="row">
-    <nav aria-label="...">
-      <ul class="pagination" id="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#">Primero</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#"><<</a>
-        </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">3</a>
-        </li>
-        <li class="page-item ">
-          <a class="page-link" href="#">4</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">5</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">6</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">7</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">8</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">9</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">10</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">>></a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" id="last-page" href="#">Último (43)</a>
-        </li>
-      </ul>
-    </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <nav aria-label="...">
+        <ul class="pagination" id="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#">Primero</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#"><<</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item ">
+            <a class="page-link" href="#">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">6</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">7</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">8</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">9</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">10</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">>></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" id="last-page" href="#">Último (43)</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
 

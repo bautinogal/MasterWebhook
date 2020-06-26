@@ -40,4 +40,16 @@ const receive = (queue, handler) => {
     });
 }
 
+//Funcion para suscribirse (desencolar) a una cola ("para los consumers")
+const unsuscribeAll = (queue) => {
+    console.log('Queue@receive: Suscribing to queue "%s".', queue);
+    channel().then(channel => {
+        channel.assertQueue(queue, { durable: false });
+        console.log('Queue@receive: Listening for messages on queue "%s"', queue);
+        channel.consume(queue, msg => handler(JSON.parse(msg.content.toString())), {
+            noAck: true,
+        });
+    });
+}
+
 module.exports = { send, receive };

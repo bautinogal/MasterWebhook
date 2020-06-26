@@ -6,6 +6,11 @@ const repo = require('../lib/repo');
 const config = require('../config/config');
 const utils = require('../lib/utils');
 
+//TODO: Esto es para q la app funcione en heroku´-------------
+const http = require("http");
+const url = "http://unm-kvm-masterbus-4.planisys.net:3000/api/getlist";
+
+//-------------------------------------------------------------
 
 function ArrayObjFilter(arrObj, filters) {
     return arrObj.map(obj => utils.objFilter(obj, filters))
@@ -95,6 +100,32 @@ router.post('/addpost', bodyParser.text({ type: '*/*' }), async(req, res, next) 
 //Devuelvo una lista filtrada por el query
 //TODO: revisar como recibimos la query y si no hay q mover cosas a otro lado...
 router.get('/api/getlist', async(req, res, next) => {
+    //TODO: Esto es para q la app funcione en heroku-------------------
+    var str = "";
+    var obj = req.query;
+    for (var key in obj) {
+        if (str != "") {
+            str += "&";
+        }
+        str += key + "=" + encodeURIComponent(obj[key]);
+    }
+
+    http.get(url + '?' + str, req.query, response => {
+        console.log("redirecting to url: %s", url);
+        console.log("query: q: %s", req.query);
+        let body = "";
+        response.on("data", data => {
+            body += data;
+        });
+        response.on("end", () => {
+            res.send(body);
+        });
+    });
+    //------------------------------------------------------------------
+
+
+
+    /*
     let query = {};
     let desde = Number(req.query.desde || 0);
     let cantidad = Number(req.query.cantidad || 20);
@@ -107,7 +138,7 @@ router.get('/api/getlist', async(req, res, next) => {
         .catch(err => {
             console.log("err /api/getlist: ", err);
             res.send("error listado")
-        });
+        });*/
 });
 
 module.exports = router;

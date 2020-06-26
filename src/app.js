@@ -7,20 +7,6 @@ const http = require('http');
 const https = require('https');
 require('./config/collectionConfig.js');
 
-/*
-const opts = {
-    key: fs.readFileSync('./server_key.pem'),
-    cert: fs.readFileSync('./server_cert.pem'),
-    //requestCert: false,
-    //rejectUnauthorized: false,
-    //ca: [fs.readFileSync('./server_cert.pem')]
-}
-
-console.log("Key: " + opts.key);
-console.log("Cert: " + opts.cert);
-console.log("Ca: " + opts.ca);
-*/
-
 // Inicializo el servidor
 const app = express();
 console.log(`App: Inicializando Servidor...`);
@@ -47,18 +33,34 @@ app.use('/', routes);
 console.log(`App: Rutas cargadas:`);
 
 // Prendo worker que va a mover los mensajes de la cola a la bd
-const worker = require('./workers/wRabToMdb');
+require('./workers/wRabToMdb');
 
 // Puesta en marcha del servidor
 console.log(`App: Servidor Listo!`);
 
 
+//Inicio sin credenciales:
 app.listen(app.get('port'), () => {
     console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`);
 });
 
-//https.createServer(opts, app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
+
 /*
-app.listen(app.get('port'));
-https.createServer(app).listen(app.get('port'), console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`));
-*/
+//Inicio con credenciales:
+
+//Parametros de los certicados/keys ssl del servidor
+const opts = {
+    cert: fs.readFileSync('./ssl/star_masterbus_net_28693247star_masterbus_net.crt'),
+    ca: fs.readFileSync('./ssl/star_masterbus_net_28693247DigiCertCA.crt'),
+    key: fs.readFileSync('./ssl/.ssh/privatekey.key'),
+    requestCert: false,
+    rejectUnauthorized: false
+}
+
+console.log("Key: " + opts.key);
+console.log("Cert: " + opts.cert);
+console.log("Ca: " + opts.ca);
+
+https.createServer(opts, app).listen(app.get('port'), () => {
+    console.log(`App: Servidor escuchando en el puerto:  ${app.get('port')}`);
+});*/
