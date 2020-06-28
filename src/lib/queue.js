@@ -25,7 +25,7 @@ const send = (queue, message) => {
         message.serverEnqueuedTS = Date.now();
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
         console.log('Queue@send: Message enqued in "%s". Message: %s ', queue, message);
-    })
+    }).catch(console.log('Queue@send:Channel is null!'));
 };
 
 //Funcion para suscribirse (desencolar) a una cola ("para los consumers")
