@@ -21,23 +21,32 @@ const send = (queue, message) => {
     console.log('Queue@send: Message received in queue "%s". Message: %s ', queue, message);
 
     channel().then(channel => {
-        channel.assertQueue(queue, { durable: false });
-        message.serverEnqueuedTS = Date.now();
-        channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
-        console.log('Queue@send: Message enqued in "%s". Message: %s ', queue, message);
-    }).catch(console.log('Queue@send:Channel is null!'));
+        try {
+            channel.assertQueue(queue, { durable: false });
+            message.serverEnqueuedTS = Date.now();
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
+            console.log('Queue@send: Message enqued in "%s". Message: %s ', queue, message);
+        } catch {
+            console.log('Queue@send:Channel is null!');
+        }
+
+    });
 };
 
 //Funcion para suscribirse (desencolar) a una cola ("para los consumers")
 const receive = (queue, handler) => {
     console.log('Queue@receive: Suscribing to queue "%s".', queue);
     channel().then(channel => {
-        channel.assertQueue(queue, { durable: false });
-        console.log('Queue@receive: Listening for messages on queue "%s"', queue);
-        channel.consume(queue, msg => handler(JSON.parse(msg.content.toString())), {
-            noAck: true,
-        });
-    }).catch(console.log('Queue@receive:Channel is null!'));
+        try {
+            channel.assertQueue(queue, { durable: false });
+            console.log('Queue@receive: Listening for messages on queue "%s"', queue);
+            channel.consume(queue, msg => handler(JSON.parse(msg.content.toString())), {
+                noAck: true,
+            });
+        } catch {
+            console.log('Queue@receive:Channel is null!');
+        }
+    });
 }
 
 //Funcion para suscribirse (desencolar) a una cola ("para los consumers")
