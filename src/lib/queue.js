@@ -37,7 +37,7 @@ const receive = (queue, handler) => {
         channel.consume(queue, msg => handler(JSON.parse(msg.content.toString())), {
             noAck: true,
         });
-    });
+    }).catch(console.log('Queue@receive:Channel is null!'));
 }
 
 //Funcion para suscribirse (desencolar) a una cola ("para los consumers")
